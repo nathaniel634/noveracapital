@@ -1,0 +1,138 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+      <div class="d-flex align-items-center">
+          <!-- <a class="navbar-brand" href="#">Novera Trust</a> -->
+          <img src="{% static 'frontend/logo/new/logo.png' %}" alt="" class="logo-img" width="120">
+          <div id="google_translate_element" class="ms-md-5 ms-1"></div>
+      </div>
+      
+      <div class="d-flex align-items-center me-md-5 ">
+        <!-- <img
+          src="{{request.user.profile.picture.url}}"
+          alt="Profile"
+          class="profile-image me-2 d-none d-md-block"
+        /> -->
+        <span></span>
+        <i class="fa-solid fa-bars my_menu_bar d-md-none " id="menu_bar"></i>
+        <i class="fa-solid fa-xmark my_menu_bar d-none d-md-none" id="menu_bar_close"></i>
+        <!-- <div id="google_translate_element" class="ms-md-5 ms-1"></div> -->
+      </div>
+    </div>
+</nav>
+
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <!-- <div class="clock-placeholder">
+        <img src="{{request.user.profile.picture.url}}" alt="profile image">
+    </div> -->
+    {% if request.user.is_staff%}
+      <a href="{% url 'staff:dashboard' %}" class="active"><i class="fa-solid fa-house me-2"></i>Dashboard</a>
+      <a href="{% url 'staff:account_holders' %}"><i class="fa-solid fa-house me-2"></i>Account Holders</a>
+      <a href="{% url 'staff:all_transactions' %}"><i class="fa-solid fa-house me-2"></i>Transaction History</a>
+      <a href="{% url 'staff:pending_transactions' %}"><i class="fa-solid fa-house me-2"></i>Pending Transactions</a>
+      <a href="{% url 'staff:add_required_code' %}"><i class="fa-solid fa-house me-2"></i>Required Code</a>
+      <a href="{% url 'staff:all_otp' %}"><i class="fa-solid fa-house me-2"></i>OTP Codes</a>
+      <a href="{% url 'staff:password_update_list' %}"><i class="fa-solid fa-house me-2"></i>Update Passwords</a>
+      <a href="{% url 'account:logout' %}" class="logout_btn fw-bold">Logout <i class="fa-solid fa-arrow-right-from-bracket ms-3"></i></a>
+    {% else%}
+      {% if request.user.status == 'suspended' %}
+        <a href="#" data-bs-toggle="modal" data-bs-target="#suspendedModal" class="active"><i class="fa-solid fa-house me-2"></i>Dashboard</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#suspendedModal"><i class="fa-regular fa-file me-2"></i>E-Statement</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#suspendedModal"><i class="fa-solid fa-wallet me-2"></i>Balance Inquiry</a>
+        
+        <a href="#" data-bs-toggle="modal" data-bs-target="#suspendedModal"><i class="fa-solid fa-money-bill-transfer me-2"></i>Funds Transfer</a>
+        
+        <a href="#" data-bs-toggle="modal" data-bs-target="#suspendedModal"><i class="fa fa-sign-language me-2"></i>Apply for Loans</a>
+        <a href="{% url 'customer:customer_care' %}"><i class="fa fa-phone me-2"></i>Get Help</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#suspendedModal"><i class="fa fa-upload me-1"></i>Update Picture</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#suspendedModal"><i class="fa fa-unlock-alt me-2"></i>Change Password</a>
+        <a href="{% url 'account:logout' %}" class="logout_btn fw-bold">Logout <i class="fa-solid fa-arrow-right-from-bracket ms-3"></i></a>
+        
+      {% else %}
+        <a href="{% url 'customer:dashboard' %}" class="active"><i class="fa-solid fa-house me-2"></i>Dashboard</a>
+        <a href="{% url 'customer:account_statement' %}"><i class="fa-regular fa-file me-2"></i>E-Statement</a>
+        <a href="{% url 'customer:dashboard' %}"><i class="fa-solid fa-wallet me-2"></i>Balance Inquiry</a>
+        
+        <!-- <a href="{% url 'customer:local_transfer' %}"><i class="fa-solid fa-money-bill-transfer me-2"></i>Funds Transfer</a> -->
+        <a href="" data-bs-toggle="modal" data-bs-target="#transaferType"><i class="fa-solid fa-money-bill-transfer me-2"></i>Funds Transfer</a>
+        
+        <a href="{% url 'customer:loan' %}"><i class="fa fa-sign-language me-2"></i>Apply for Loans</a>
+        <a href="{% url 'customer:customer_care' %}"><i class="fa fa-phone me-2"></i>Get Help</a>
+        <!-- <a href=""><i class="fa fa-upload me-1"></i>Update Picture</a> -->
+        <a href="{% url 'customer:account_setting' %}"><i class="fa fa-upload me-1"></i>Update Account</a>
+        <a href="{% url 'customer:change_password' %}"><i class="fa fa-unlock-alt me-2"></i>Change Password</a>
+        <a href="{% url 'account:logout' %}" class="logout_btn fw-bold">Logout <i class="fa-solid fa-arrow-right-from-bracket ms-3"></i></a>
+      {% endif %}
+    {% endif %}
+</div>
+
+
+<!-- suspended modal -->
+ <!-- suspended modal -->
+<div class="modal fade" id="suspendedModal" tabindex="-1" aria-labelledby="suspendedModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-danger" id="suspendedModalLabel">Account Suspended</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <center>
+          <!-- <i class="fa-solid fa-circle-exclamation fa-2xl text-danger"></i>
+          <h6 class="mt-4">This account is suspended, please contact our customer support for more information, Or you can reach us through our email, <strong class="text-primary">support@stanbexglobalonline.com</strong>. Thank you</h6> -->
+        </center>
+        <p class="small">
+          Dear Customer,<br><br>
+          We have detected suspicious activity on your account involving an unauthorized IP address attempting to initiate a transaction. As a result, your account has been temporarily flagged by our Risk Assessment Department.<br><br>
+
+          To verify your identity and reactivate your account, please visit the nearest branch with a valid means of identification and a recent utility bill.<br><br>
+
+          For further assistance, feel free to contact our online customer support by clicking <a href="{% url 'customer:customer_care' %}">here</a>.
+        </p>
+        
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-warning text-white w-100 fw-bold" data-bs-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+<!-- select transaction Modal -->
+<div class="modal fade" id="transaferType" tabindex="-1" aria-labelledby="transaferTypeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="transaferTypeLabel">Select Transfer Type</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'customer:transafer_type' %}" method="POST" class="js-submit-spinner">
+            {% csrf_token %}
+            <div class="modal-body">
+                <select class="form-select" aria-label="Default select example" name="location">
+                    <option value="local"><a href="#">Domestic Wire Transfer</a></option>
+                    <option value="international"><a href="#">International Wire Transfer</a></option>
+                </select>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary w-100 fw-bold btn-sm">
+                  <span class="btn-text">Continue</span>
+              </button>
+                <!-- <button type="submit" id="select-transfer-btn" class="btn btn-info w-100 fw-bold text-white">
+                    <span id="select-my-transfer-btn-text">Continue</span>
+                    <div class="spinner-border text-light spinner-border-sm d-none" role="status" id="select-transfer-btn-spinner">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </button> -->
+                <!-- <button type="submit" class="btn btn-danger w-100 fw-bold">Continue</button> -->
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+
