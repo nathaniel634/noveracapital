@@ -12,10 +12,13 @@
                   {{user_ip_address}}
                 </span> 
               </p>
+              <p id="acc_no">
+                ACC/No.: {{ request.user.account.account_no }}
+              </p>
               <p id="last-login" data-time="{{ request.user.last_login|date:'c' }}">
                 Date/Time: {{ request.user.last_login }}
               </p>
-              <!-- <p id="last-login">Date/Time: {{request.user.last_login}}</p> -->
+              
             </div>
             <div class="col-md-4 mt-5">
               <div class="">
