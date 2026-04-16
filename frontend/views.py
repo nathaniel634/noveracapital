@@ -7,9 +7,11 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
+from django.contrib import messages
 
 from notification.email_utils import send_email_threaded, send_email_sync
 from account.models import MyUser, PasswordReset
+from .forms import ContactForm
 
 def home_view(request):
     return render(request, 'frontend/index.html')
@@ -18,7 +20,35 @@ def about_view(request):
     return render(request, 'frontend/about.html')
 
 def contact_view(request):
-    return render(request, 'frontend/contact.html')
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+
+            final_message = 'emails/customer_care_email.html' 
+            context = {
+                'name': name,
+                'email': email,
+                'message': message,
+            }
+
+            try:
+                send_email_sync(
+                    subject=f"email coming from {name}-{email}",
+                    to_email='support@noveracapitalonline.com',
+                    html_template=final_message,
+                    context=context,
+                )
+                messages.success(request, 'Email sent successfully, we will get back to you as soon as possible')
+            except:
+                messages.error(request, 'There was an error while trying to send your email, please try again')
+
+            return redirect('frontend:contact')
+    else:
+        form = ContactForm()
+    return render(request, 'frontend/contact.html', {'form': form})
 
 
 def forgot_password(request):
